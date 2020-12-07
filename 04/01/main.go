@@ -46,7 +46,6 @@ func main() {
 
 		for _, field := range requiredFields {
 			if _, ok := passport[field]; !ok {
-				// println(field, "not found")
 				valid = false
 			}
 		}
