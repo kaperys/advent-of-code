@@ -20,7 +20,6 @@ func main() {
 		board = append(board, scanner.Text())
 	}
 
-	println("board is w", len(board[0]), "x h", len(board))
 	traverse := func(right, down int) int {
 		var (
 			x, y  int
@@ -32,7 +31,6 @@ func main() {
 				x -= len(board[0])
 			}
 
-			// println("checking x", x, "y", y)
 			loc := string(board[y][x])
 			if loc == "#" {
 				trees++
