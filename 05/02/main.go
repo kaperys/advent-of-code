@@ -25,10 +25,6 @@ func main() {
 		column := search(0, 7, "L", "R", columns)
 		seatID := (row * 8) + column
 
-		// println(row)
-		// println(column)
-		// println(seatID)
-
 		seats[seatID] = true
 	}
 
@@ -60,8 +56,6 @@ func search(min, max int, low, high, input string) int {
 		if min == max {
 			return max
 		}
-
-		// println(min, max, ":", mid, move)
 	}
 
 	return -1
