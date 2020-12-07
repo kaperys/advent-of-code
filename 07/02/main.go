@@ -41,8 +41,8 @@ func main() {
 		rules[name] = parent
 
 		for _, bag := range bags {
-			// TODO(kaperys) replace this hack with regex
-			bag = strings.TrimSpace(strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(bag, "bags"), "bag"), "bag."), "bags."))
+			parts := strings.Split(bag, " ")
+			bag = strings.TrimSpace(strings.Join(parts[:len(parts)-1], " "))
 
 			if bag == "no other" {
 				continue
