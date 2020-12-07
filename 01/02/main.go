@@ -17,7 +17,7 @@ func main() {
 
 	defer input.Close()
 
-	var expenses []float64
+	expenses := make(map[float64]struct{})
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
@@ -26,16 +26,17 @@ func main() {
 			panic(err)
 		}
 
-		expenses = append(expenses, expense)
+		expenses[expense] = struct{}{}
 	}
 
-	for _, x := range expenses {
-		for _, y := range expenses {
-			for _, z := range expenses {
-				if x+y+z == target {
-					fmt.Printf("%v x %v x %v = %f\n", x, y, z, x*y*z)
-					return
-				}
+	for x := range expenses {
+		t := target - x
+		for y := range expenses {
+			z := t - y
+			_, ok := expenses[z]
+			if ok {
+				fmt.Printf("%0.f\n", x*y*z)
+				return
 			}
 		}
 	}
