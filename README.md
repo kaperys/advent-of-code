@@ -1,3 +1,3 @@
-# Advent of Code 2020
+# Advent of Code
 
-My Advent of Code 2020 solutions written in Go.
+A collection of my [Advent of Code 2020](https://adventofcode.com/) solutions, written in mostly Go.
