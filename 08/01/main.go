@@ -8,7 +8,6 @@ import (
 
 type Instruction struct {
 	Operation string
-	Direction string
 	Value     int
 }
 
@@ -26,18 +25,15 @@ func main() {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		value, err := strconv.Atoi(line[5:])
+		value, err := strconv.Atoi(line[4:])
 		if err != nil {
 			panic(err)
 		}
 
-		i := Instruction{
+		instructions = append(instructions, Instruction{
 			Operation: line[0:3],
-			Direction: line[4:5],
 			Value:     value,
-		}
-
-		instructions = append(instructions, i)
+		})
 	}
 
 	var (
@@ -57,24 +53,10 @@ func main() {
 		switch op.Operation {
 		case "jmp":
 			visited[i] = struct{}{}
-
-			if op.Direction == "+" {
-				i += op.Value
-			}
-
-			if op.Direction == "-" {
-				i -= op.Value
-			}
+			i += op.Value
 		case "acc":
 			visited[i] = struct{}{}
-
-			if op.Direction == "+" {
-				accumulator += op.Value
-			}
-
-			if op.Direction == "-" {
-				accumulator -= op.Value
-			}
+			accumulator += op.Value
 
 			i++
 		case "nop":
