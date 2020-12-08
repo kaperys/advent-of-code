@@ -1,51 +1,27 @@
 package main
 
 import (
-	"bufio"
-	"os"
-	"strconv"
+	"fmt"
+	"io/ioutil"
+	"strings"
 )
 
-type Instruction struct {
-	Operation string
-	Value     int
-}
-
 func main() {
-	input, err := os.Open("08/input.txt")
+	input, err := ioutil.ReadFile("08/input.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	defer input.Close()
-
-	var instructions []Instruction
-
-	scanner := bufio.NewScanner(input)
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		value, err := strconv.Atoi(line[4:])
-		if err != nil {
-			panic(err)
-		}
-
-		instructions = append(instructions, Instruction{
-			Operation: line[0:3],
-			Value:     value,
-		})
-	}
+	instructions := strings.Split(strings.TrimSpace(string(input)), "\n")
 
 	for i := 0; i < len(instructions); i++ {
-		modifiedInstructions := make([]Instruction, len(instructions))
+		modifiedInstructions := make([]string, len(instructions))
 		copy(modifiedInstructions, instructions)
 
-		switch modifiedInstructions[i].Operation {
-		case "jmp":
-			modifiedInstructions[i].Operation = "nop"
-		case "nop":
-			modifiedInstructions[i].Operation = "jmp"
-		}
+		modifiedInstructions[i] = strings.NewReplacer(
+			"jmp", "nop",
+			"nop", "jmp",
+		).Replace(modifiedInstructions[i])
 
 		j, a := run(modifiedInstructions)
 		if j >= len(modifiedInstructions) {
@@ -55,36 +31,38 @@ func main() {
 	}
 }
 
-func run(instructions []Instruction) (int, int) {
-	var (
-		i           int
-		accumulator int
-
-		visited = make(map[int]struct{})
-	)
+func run(instructions []string) (int, int) {
+	var i, a int
+	visited := make(map[int]struct{})
 
 	for {
 		if i >= len(instructions) {
-			return i, accumulator
+			return i, a
 		}
 
 		if _, ok := visited[i]; ok {
-			return i, accumulator
+			return i, a
 		}
 
-		op := instructions[i]
-		switch op.Operation {
+		visited[i] = struct{}{}
+
+		var (
+			operation string
+			value     int
+		)
+
+		_, err := fmt.Sscanf(instructions[i], "%s %d", &operation, &value)
+		if err != nil {
+			panic(err)
+		}
+
+		switch operation {
 		case "jmp":
-			visited[i] = struct{}{}
-			i += op.Value
-
+			i += value
 		case "acc":
-			visited[i] = struct{}{}
-			accumulator += op.Value
-
+			a += value
 			i++
 		case "nop":
-			visited[i] = struct{}{}
 			i++
 		}
 	}
