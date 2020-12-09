@@ -1,24 +1,17 @@
 package main
 
 import (
-	"bufio"
-	"os"
+	"io/ioutil"
+	"strings"
 )
 
 func main() {
-	input, err := os.Open("2020/03/input.txt")
+	input, err := ioutil.ReadFile("2020/03/input.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	defer input.Close()
-
-	var board []string
-
-	scanner := bufio.NewScanner(input)
-	for scanner.Scan() {
-		board = append(board, scanner.Text())
-	}
+	board := strings.Split(strings.TrimSpace(string(input)), "\n")
 
 	var (
 		x, y  int
@@ -30,8 +23,7 @@ func main() {
 			x -= len(board[0])
 		}
 
-		loc := string(board[y][x])
-		if loc == "#" {
+		if string(board[y][x]) == "#" {
 			trees++
 		}
 
