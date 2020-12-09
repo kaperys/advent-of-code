@@ -20,7 +20,7 @@ type Child struct {
 }
 
 func main() {
-	input, err := os.Open("07/input.txt")
+	input, err := os.Open("2020/07/input.txt")
 	if err != nil {
 		panic(err)
 	}

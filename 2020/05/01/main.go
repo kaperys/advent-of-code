@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	input, err := os.Open("05/input.txt")
+	input, err := os.Open("2020/05/input.txt")
 	if err != nil {
 		panic(err)
 	}

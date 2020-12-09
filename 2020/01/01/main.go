@@ -10,7 +10,7 @@ import (
 const target = 2020
 
 func main() {
-	input, err := os.Open("01/input.txt")
+	input, err := os.Open("2020/01/input.txt")
 	if err != nil {
 		panic(err)
 	}
