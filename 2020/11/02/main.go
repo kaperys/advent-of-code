@@ -43,36 +43,20 @@ func run(in []string) []string {
 		for x, seat := range row {
 			var occupied int
 
-			adjacent := []func(image.Point) image.Point{
-				func(point image.Point) image.Point { // north west
-					return point.Add(image.Point{X: -1, Y: -1})
-				},
-				func(point image.Point) image.Point { // north
-					return point.Add(image.Point{Y: -1})
-				},
-				func(point image.Point) image.Point { // north east
-					return point.Add(image.Point{X: +1, Y: -1})
-				},
-				func(point image.Point) image.Point { // west
-					return point.Add(image.Point{X: -1})
-				},
-				func(point image.Point) image.Point { // east
-					return point.Add(image.Point{X: +1})
-				},
-				func(point image.Point) image.Point { // south west
-					return point.Add(image.Point{X: -1, Y: +1})
-				},
-				func(point image.Point) image.Point { // south
-					return point.Add(image.Point{Y: +1})
-				},
-				func(point image.Point) image.Point { // south east
-					return point.Add(image.Point{X: +1, Y: +1})
-				},
+			adjacent := []image.Point{
+				{X: -1, Y: -1}, // north west
+				{Y: -1},        // north
+				{X: +1, Y: -1}, // north east
+				{X: -1},        // west
+				{X: +1},        // east
+				{X: -1, Y: +1}, // south west
+				{Y: +1},        // south
+				{X: +1, Y: +1}, // south east
 			}
 
 			start := image.Point{X: x, Y: y}
-			for _, fn := range adjacent {
-				loc := fn(start)
+			for _, dir := range adjacent {
+				loc := start.Add(dir)
 
 				for loc.In(seats) {
 					if in[loc.Y][loc.X] == 'L' {
@@ -84,7 +68,7 @@ func run(in []string) []string {
 						break
 					}
 
-					loc = fn(loc)
+					loc = loc.Add(dir)
 				}
 			}
 
