@@ -3,6 +3,7 @@ package main
 import (
 	"image"
 	"io/ioutil"
+	"regexp"
 	"strings"
 )
 
@@ -25,15 +26,7 @@ func main() {
 			continue
 		}
 
-		// TODO(kaperys) implement a less brute-forcey way to do this
-		var occupied int
-		for _, s := range i {
-			if s == '#' {
-				occupied++
-			}
-		}
-
-		println("there are", occupied, "occupied seats")
+		println("there are", len(regexp.MustCompile("#").FindAllStringIndex(i, -1)), "occupied seats")
 		return
 	}
 }

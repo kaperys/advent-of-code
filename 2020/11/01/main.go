@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"regexp"
 	"strings"
 )
 
@@ -24,15 +25,7 @@ func main() {
 			continue
 		}
 
-		// TODO(kaperys) implement a less brute-forcey way to do this
-		var occupied int
-		for _, s := range i {
-			if s == '#' {
-				occupied++
-			}
-		}
-
-		println("there are", occupied, "occupied seats")
+		println("there are", len(regexp.MustCompile("#").FindAllStringIndex(i, -1)), "occupied seats")
 		return
 	}
 }
@@ -49,7 +42,6 @@ func run(in []string) []string {
 				{x, y - 1},     // north
 				{x + 1, y - 1}, // north east
 				{x - 1, y},     // west
-				// {x, y},      // current seat
 				{x + 1, y},     // east
 				{x - 1, y + 1}, // south west
 				{x, y + 1},     // south
