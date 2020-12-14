@@ -9,6 +9,7 @@ import (
 
 const preamble = 25
 
+// https://adventofcode.com/2020/day/9#part2
 func main() {
 	input, err := os.Open("2020/09/input.txt")
 	if err != nil {

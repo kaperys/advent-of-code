@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// https://adventofcode.com/2020/day/10
 func main() {
 	input, err := os.Open("2020/10/input.txt")
 	if err != nil {

@@ -9,6 +9,7 @@ import (
 
 const target = 2020
 
+// https://adventofcode.com/2020/day/1
 func main() {
 	input, err := os.Open("2020/01/input.txt")
 	if err != nil {

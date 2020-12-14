@@ -19,6 +19,7 @@ type Child struct {
 	Number int
 }
 
+// https://adventofcode.com/2020/day/7#part2
 func main() {
 	input, err := os.Open("2020/07/input.txt")
 	if err != nil {

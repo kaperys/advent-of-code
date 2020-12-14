@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// https://adventofcode.com/2020/day/13
 func main() {
 	input, err := ioutil.ReadFile("2020/13/input.txt")
 	if err != nil {

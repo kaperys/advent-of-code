@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// https://adventofcode.com/2020/day/4
 func main() {
 	input, err := os.Open("2020/04/input.txt")
 	if err != nil {
