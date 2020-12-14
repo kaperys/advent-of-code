@@ -3,7 +3,6 @@ package main
 import (
 	"image"
 	"io/ioutil"
-	"regexp"
 	"strings"
 )
 
@@ -27,7 +26,7 @@ func main() {
 			continue
 		}
 
-		println("there are", len(regexp.MustCompile("#").FindAllStringIndex(i, -1)), "occupied seats")
+		println("there are", strings.Count(i, "#"), "occupied seats")
 		return
 	}
 }
