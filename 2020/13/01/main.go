@@ -15,15 +15,14 @@ func main() {
 	}
 
 	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	timestamp, _ := strconv.Atoi(in[0])
-	busses := strings.Split(in[1], ",")
 
 	var (
 		earliestBus int
 		earliestDel int = math.MaxInt64
 	)
 
-	for _, bus := range busses {
+	timestamp, _ := strconv.Atoi(in[0])
+	for _, bus := range strings.Split(in[1], ",") {
 		if bus == "x" {
 			continue
 		}
