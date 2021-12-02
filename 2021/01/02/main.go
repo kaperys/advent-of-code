@@ -15,32 +15,27 @@ func main() {
 
 	defer input.Close()
 
-	var depths []int64
+	var prev1, prev2, lastDepth, count int64
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
-		depth, err := strconv.ParseInt(scanner.Text(), 10, 64)
+		current, err := strconv.ParseInt(scanner.Text(), 10, 64)
 		if err != nil {
 			panic(err)
 		}
 
-		depths = append(depths, depth)
-	}
+		if prev1 != 0 && prev2 != 0 {
+			depth := current + prev1 + prev2
+			if depth > lastDepth {
+				count++
+			}
 
-	var last, larger int64
-	for i := 0; i < len(depths); i++ {
-		if i+2 > len(depths)-1 {
-			break
+			lastDepth = depth
 		}
 
-		x, y, z := depths[i], depths[i+1], depths[i+2]
-		depth := x + y + z
-		if depth > last {
-			larger++
-		}
-
-		last = depth
+		prev2 = prev1
+		prev1 = current
 	}
 
-	println(larger - 1)
+	println(count - 1)
 }
