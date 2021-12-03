@@ -21,31 +21,14 @@ func main() {
 		numbers = append(numbers, scanner.Text())
 	}
 
-	// ----
-
 	oxygenNumbers := make([]string, len(numbers))
 	copy(oxygenNumbers, numbers)
-
-	needle, _ := mostCommon(oxygenNumbers, 0, "1")
-	oxygen := oxygenGeneratorRating(oxygenNumbers, needle, 0, "1")
-
-	// ----
 
 	co2Numbers := make([]string, len(numbers))
 	copy(co2Numbers, numbers)
 
-	needle, _ = mostCommon(co2Numbers, 0, "0")
-
-	// invert the needle
-	if needle == "1" {
-		needle = "0"
-	} else {
-		needle = "1"
-	}
-
-	co2 := co2ScrubberRating(co2Numbers, needle, 0, "0")
-
-	// ----
+	oxygen := oxygenGeneratorRating(oxygenNumbers, 0, "1")
+	co2 := co2ScrubberRating(co2Numbers, 0, "0")
 
 	oxygenDecimal, err := strconv.ParseInt(oxygen, 2, 64)
 	if err != nil {
@@ -57,13 +40,11 @@ func main() {
 		panic(err)
 	}
 
-	println("oxygen", oxygen, oxygenDecimal)
-	println("co2", co2, co2Decimal)
-
 	println(oxygenDecimal * co2Decimal)
 }
 
-func oxygenGeneratorRating(numbers []string, needle string, position int, tie string) string {
+func oxygenGeneratorRating(numbers []string, position int, tie string) string {
+	needle, _ := mostCommon(numbers, 0, "1")
 	for {
 		numbers = filterNumbers(numbers, needle, position)
 		if len(numbers) == 1 {
@@ -75,7 +56,16 @@ func oxygenGeneratorRating(numbers []string, needle string, position int, tie st
 	}
 }
 
-func co2ScrubberRating(numbers []string, needle string, position int, tie string) string {
+func co2ScrubberRating(numbers []string, position int, tie string) string {
+	needle, _ := mostCommon(numbers, 0, "0")
+
+	// invert the needle
+	if needle == "1" {
+		needle = "0"
+	} else {
+		needle = "1"
+	}
+
 	for {
 		numbers = filterNumbers(numbers, needle, position)
 		if len(numbers) == 1 {
