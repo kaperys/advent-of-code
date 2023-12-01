@@ -44,7 +44,6 @@ func main() {
 			rv = string(text[ri]) + rv
 
 			for k, v := range nums {
-				// v = "-" // disable part 2
 				if (strings.HasSuffix(lv, v) || strings.HasSuffix(lv, k)) && l == "" {
 					l = k
 				}
@@ -55,7 +54,6 @@ func main() {
 			}
 
 			if l != "" && r != "" {
-				// print(l, r)
 				num, _ := strconv.ParseInt(l+r, 10, 64)
 				total += num
 				break
