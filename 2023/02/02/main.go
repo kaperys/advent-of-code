@@ -3,9 +3,11 @@ package main
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strconv"
-	"strings"
 )
+
+var cubesPattern = regexp.MustCompile(`([0-9]+) (red|blue|green)+`)
 
 func main() {
 	input, err := os.Open("2023/02/input.txt")
@@ -19,34 +21,19 @@ func main() {
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
-		text := scanner.Text()
-		parts := strings.Split(text, ":")
+		cubes := cubesPattern.FindAllStringSubmatch(scanner.Text(), -1)
+		count := map[string]int64{"green": 0, "blue": 0, "red": 0}
 
-		turns := strings.Split(parts[1], ";")
-		power := minRequired(turns)
+		for _, cube := range cubes {
+			num, _ := strconv.ParseInt(cube[1], 10, 64)
 
-		total += power
+			if num > count[cube[2]] {
+				count[cube[2]] = num
+			}
+		}
+
+		total += count["red"] * count["green"] * count["blue"]
 	}
 
 	println(total)
-}
-
-func minRequired(turns []string) int64 {
-	colours := map[string]int64{"red": 0, "blue": 0, "green": 0}
-
-	for _, turn := range turns {
-		cubes := strings.Split(turn, ",")
-		for _, cube := range cubes {
-			parts := strings.Split(strings.TrimSpace(cube), " ")
-
-			count, _ := strconv.ParseInt(parts[0], 10, 64)
-			colour := parts[1]
-
-			if colours[colour] < count {
-				colours[colour] = count
-			}
-		}
-	}
-
-	return colours["green"] * colours["red"] * colours["blue"]
 }

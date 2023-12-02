@@ -3,15 +3,20 @@ package main
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strconv"
-	"strings"
 )
 
-var rules = map[string]int64{
-	"red":   12,
-	"green": 13,
-	"blue":  14,
-}
+var (
+	gamePattern  = regexp.MustCompile(`Game ([0-9]+):`)
+	cubesPattern = regexp.MustCompile(`([0-9]+) (red|blue|green)+`)
+
+	rules = map[string]int64{
+		"red":   12,
+		"green": 13,
+		"blue":  14,
+	}
+)
 
 func main() {
 	input, err := os.Open("2023/02/input.txt")
@@ -26,34 +31,23 @@ func main() {
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
 		text := scanner.Text()
-		parts := strings.Split(text, ":")
 
-		game, _ := strconv.ParseInt(strings.TrimSpace(parts[0])[5:], 10, 64)
-		turns := strings.Split(parts[1], ";")
+		game, _ := strconv.ParseInt(gamePattern.FindStringSubmatch(text)[1], 10, 64)
+		cubes := cubesPattern.FindAllStringSubmatch(text, -1)
 
-		if isPossible(turns) {
+		isPossible := true
+		for _, cube := range cubes {
+			num, _ := strconv.ParseInt(cube[1], 10, 64)
+			if num > rules[cube[2]] {
+				isPossible = false
+				break
+			}
+		}
+
+		if isPossible {
 			total += game
 		}
 	}
 
 	println(total)
-}
-
-func isPossible(turns []string) bool {
-	for _, turn := range turns {
-		cubes := strings.Split(turn, ",")
-		for _, cube := range cubes {
-			parts := strings.Split(strings.TrimSpace(cube), " ")
-
-			count, _ := strconv.ParseInt(parts[0], 10, 64)
-			colour := parts[1]
-
-			rule, ok := rules[colour]
-			if ok && count > rule {
-				return false
-			}
-		}
-	}
-
-	return true
 }
