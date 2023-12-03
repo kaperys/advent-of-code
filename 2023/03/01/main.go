@@ -7,6 +7,8 @@ import (
 	"unicode"
 )
 
+type xy struct{ x, y int }
+
 func main() {
 	input, err := os.Open("2023/03/input.txt")
 	if err != nil {
@@ -36,64 +38,10 @@ func main() {
 			if isDigit {
 				currentNumber += string(v)
 
-				// above and below
-				if x != 0 { // above
-					if isSymbol(grid[x-1][y]) {
-						// println("found symbol", string(grid[x-1][y]), "above", string(v))
-						hasAdjacentSymbol = true
-					}
-				}
-
-				if x < len(grid)-1 { // below
-					if isSymbol(grid[x+1][y]) {
-						// println("found symbol", string(grid[x+1][y]), "below", string(v))
-						hasAdjacentSymbol = true
-					}
-				}
-
-				// left and right
-				if y != 0 { // left
-					if isSymbol(grid[x][y-1]) {
-						// println("found symbol", string(grid[x][y-1]), "left of", string(v))
-						hasAdjacentSymbol = true
-					}
-				}
-
-				if y != len(row)-1 { // right
-					if isSymbol(grid[x][y+1]) {
-						// println("found symbol", string(grid[x][y+1]), "right of", string(v))
-						hasAdjacentSymbol = true
-					}
-				}
-
-				// diagonals
-				if x != 0 { // above
-					if y != 0 { // left
-						if isSymbol(grid[x-1][y-1]) {
-							// println("found symbol", string(grid[x-1][y-1]), "above left of", string(v))
-							hasAdjacentSymbol = true
-						}
-					}
-
-					if y != len(row)-1 { // right
-						if isSymbol(grid[x-1][y+1]) {
-							// println("found symbol", string(grid[x-1][y+1]), "above right of", string(v))
-							hasAdjacentSymbol = true
-						}
-					}
-				}
-
-				if x < len(grid)-2 { // below
-					if y != 0 { // left
-						if isSymbol(grid[x+1][y-1]) {
-							// println("found symbol", string(grid[x+1][y-1]), "below left of", string(v))
-							hasAdjacentSymbol = true
-						}
-					}
-
-					if y != len(row)-1 { // right
-						if isSymbol(grid[x+1][y+1]) {
-							// println("found symbol", string(grid[x+1][y+1]), "below right of", string(v))
+				for _, neighbor := range neighborCoordinates(x, y) {
+					if (neighbor.x >= 0 && neighbor.x <= len(row)-1) &&
+						(neighbor.y >= 0 && neighbor.y <= len(grid)-1) {
+						if isSymbol(grid[neighbor.x][neighbor.y]) {
 							hasAdjacentSymbol = true
 						}
 					}
@@ -105,8 +53,6 @@ func main() {
 				if hasAdjacentSymbol { // and we've found an adjacent symbol
 					partNumber, _ := strconv.ParseInt(currentNumber, 10, 64)
 					total += partNumber
-
-					println("adding", partNumber)
 				}
 
 				currentNumber = ""
@@ -120,4 +66,17 @@ func main() {
 
 func isSymbol(char rune) bool {
 	return char != '.' && !unicode.IsDigit(char)
+}
+
+func neighborCoordinates(x, y int) []xy {
+	return []xy{
+		{x: x, y: y - 1},
+		{x: x + 1, y: y - 1},
+		{x: x + 1, y: y},
+		{x: x + 1, y: y + 1},
+		{x: x, y: y + 1},
+		{x: x - 1, y: y + 1},
+		{x: x - 1, y: y},
+		{x: x - 1, y: y - 1},
+	}
 }

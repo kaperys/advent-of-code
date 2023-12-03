@@ -19,8 +19,6 @@ var nums = map[string]string{
 	"9": "nine",
 }
 
-// It looks like some of the digits are actually spelled out with letters: one, two,
-// three, four, five, six, seven, eight, and nine also count as valid "digits"
 func main() {
 	input, err := os.Open("2023/01/input.txt")
 	if err != nil {
