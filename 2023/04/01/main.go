@@ -19,10 +19,7 @@ func main() {
 
 	scanner := bufio.NewScanner(input)
 	for i := 0; scanner.Scan(); i++ {
-		text := scanner.Text()
-
-		parts := strings.Split(text, ":")
-		nums := strings.Split(parts[1], "|")
+		nums := strings.Split(strings.Split(scanner.Text(), ":")[1], "|")
 
 		winning := strings.Fields(nums[0])
 		numbers := strings.Fields(nums[1])

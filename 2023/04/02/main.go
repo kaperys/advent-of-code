@@ -29,8 +29,7 @@ func main() {
 	}
 
 	for i, card := range cards {
-		parts := strings.Split(card, ":")
-		nums := strings.Split(parts[1], "|")
+		nums := strings.Split(strings.Split(card, ":")[1], "|")
 
 		winning := strings.Fields(nums[0])
 		numbers := strings.Fields(nums[1])
