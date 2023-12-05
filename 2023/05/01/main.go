@@ -59,7 +59,7 @@ func main() {
 		destNum   int64
 		sourceNum int64
 
-		location int64 = math.MaxInt64
+		loc int64 = math.MaxInt64
 	)
 
 	for _, seed := range seeds {
@@ -92,10 +92,10 @@ func main() {
 			}
 		}
 
-		if destNum < location {
-			location = destNum
+		if destNum < loc {
+			loc = destNum
 		}
 	}
 
-	println(location)
+	println(loc)
 }

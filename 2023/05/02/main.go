@@ -27,13 +27,9 @@ func main() {
 	for _, part := range strings.Split(string(input), "\n\n") {
 		switch {
 		case len(part) > 4 && part[0:5] == "seeds":
-			seedRanges := strings.Fields(part[7:])
-			for i := 0; i < len(seedRanges); i += 2 {
-				sRange, _ := strconv.ParseInt(seedRanges[i+1], 10, 64)
-				for j := 0; j < int(sRange); j++ {
-					si, _ := strconv.ParseInt(seedRanges[i], 10, 64)
-					seeds = append(seeds, si+int64(j))
-				}
+			for _, seed := range strings.Fields(part[7:]) {
+				sn, _ := strconv.ParseInt(seed, 10, 64)
+				seeds = append(seeds, sn)
 			}
 		default:
 			lines := strings.Split(part, "\n")
@@ -63,43 +59,46 @@ func main() {
 		destNum   int64
 		sourceNum int64
 
-		location int64 = math.MaxInt64
+		loc int64 = math.MaxInt64
 	)
 
-	for _, seed := range seeds {
-		sourceNum = seed
+	for i := 0; i < len(seeds); i += 2 {
+		start, end := seeds[i], seeds[i]+seeds[i+1]
+		for seed := start; seed < end; seed++ {
+			sourceNum = seed
 
-		for _, category := range []string{
-			"seed-to-soil",
-			"soil-to-fertilizer",
-			"fertilizer-to-water",
-			"water-to-light",
-			"light-to-temperature",
-			"temperature-to-humidity",
-			"humidity-to-location",
-		} {
-			for _, m := range maps[category] {
-				destNum = sourceNum
+			for _, category := range []string{
+				"seed-to-soil",
+				"soil-to-fertilizer",
+				"fertilizer-to-water",
+				"water-to-light",
+				"light-to-temperature",
+				"temperature-to-humidity",
+				"humidity-to-location",
+			} {
+				for _, m := range maps[category] {
+					destNum = sourceNum
 
-				if sourceNum >= m.sourceStart && sourceNum <= m.sourceEnd {
-					dest := m.destStart + (sourceNum - m.sourceStart)
+					if sourceNum >= m.sourceStart && sourceNum <= m.sourceEnd {
+						dest := m.destStart + (sourceNum - m.sourceStart)
 
-					if dest >= m.destStart && dest <= m.destEnd {
-						destNum = dest
-						sourceNum = destNum
+						if dest >= m.destStart && dest <= m.destEnd {
+							destNum = dest
+							sourceNum = destNum
 
-						break
+							break
+						}
 					}
+
+					sourceNum = destNum
 				}
-
-				sourceNum = destNum
 			}
-		}
 
-		if destNum < location {
-			location = destNum
+			if destNum < loc {
+				loc = destNum
+			}
 		}
 	}
 
-	println(location)
+	println(loc)
 }
