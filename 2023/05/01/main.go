@@ -1,8 +1,8 @@
 package main
 
 import (
+	"math"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -21,7 +21,7 @@ func main() {
 
 	var (
 		seeds []int64
-		maps  map[string][]sourceDestMap = make(map[string][]sourceDestMap)
+		maps  map[string][]*sourceDestMap = make(map[string][]*sourceDestMap)
 	)
 
 	for _, part := range strings.Split(string(input), "\n\n") {
@@ -43,7 +43,7 @@ func main() {
 					sourceStart, _ := strconv.ParseInt(nums[1], 10, 64)
 					sRange, _ := strconv.ParseInt(nums[2], 10, 64)
 
-					maps[name] = append(maps[name], sourceDestMap{
+					maps[name] = append(maps[name], &sourceDestMap{
 						destStart:   destStart,
 						destEnd:     destStart + (sRange - 1),
 						sourceStart: sourceStart,
@@ -59,7 +59,7 @@ func main() {
 		destNum   int64
 		sourceNum int64
 
-		locations []int64
+		location int64 = math.MaxInt64
 	)
 
 	for _, seed := range seeds {
@@ -92,8 +92,10 @@ func main() {
 			}
 		}
 
-		locations = append(locations, destNum)
+		if destNum < location {
+			location = destNum
+		}
 	}
 
-	println(slices.Min(locations))
+	println(location)
 }
